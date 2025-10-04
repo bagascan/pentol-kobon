@@ -15,10 +15,6 @@
   ],
   "rewrites": [
     {
-      "source": "/uploads/(.*)",
-      "destination": "/backend/uploads/$1"
-    },
-    {
       "source": "/api/(.*)",
       "destination": "/backend/server.js"
     },
