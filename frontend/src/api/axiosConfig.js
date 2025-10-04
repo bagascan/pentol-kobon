@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-export const SERVER_URL = 'https://pentol-kobong-pos.vercel.app/:5001'; // Gunakan localhost untuk development stabil
-const API_URL = `${SERVER_URL}/api/`;
+// PERBAIKAN: Hapus URL hardcode. Gunakan path relatif agar Vercel bisa
+// menangani routing ke backend sesuai aturan di vercel.json.
+export const SERVER_URL = ''; // Tidak perlu lagi
+const API_URL = '/api';
 
 const api = axios.create({
   baseURL: API_URL,
