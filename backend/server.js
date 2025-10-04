@@ -32,20 +32,12 @@ const app = express();
 app.use(cors()); // Gunakan konfigurasi default yang lebih permisif untuk development
 app.use(express.json()); // Mem-parsing body request sebagai JSON
 
-// Koneksi ke MongoDB
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('Berhasil terhubung ke MongoDB Atlas');
-    // Jalankan server HANYA jika koneksi DB berhasil
-
-    const PORT = process.env.PORT || 5001;
-    app.listen(PORT, () => {
-      console.log(`Server berjalan di port ${PORT}`);
-    });
-  })
-  .catch((error) => {
-    console.error('Error koneksi database:', error.message);
-  });
+// Koneksi ke MongoDB (dijalankan saat serverless function dipanggil)
+mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log('Berhasil terhubung ke MongoDB Atlas');
+}).catch((error) => {
+  console.error('Error koneksi database:', error.message);
+});
 
 // Contoh Route Sederhana untuk tes
 app.get('/', (req, res) => {
@@ -72,3 +64,14 @@ app.use('/api/assets', require('./routes/assetRoutes'));
 app.use('/api/summary-reports', require('./routes/reportRoutes')); // PERBAIKAN: Mengganti nama rute
 // Gunakan Middleware Error Handler (Harus setelah routes)
 app.use(errorHandler);
+
+// Jika tidak sedang dalam lingkungan produksi Vercel, jalankan server secara lokal
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5001;
+  app.listen(PORT, () => {
+    console.log(`Server berjalan di mode development pada port ${PORT}`);
+  });
+}
+
+// Ekspor aplikasi untuk Vercel
+module.exports = app;

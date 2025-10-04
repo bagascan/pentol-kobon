@@ -5,7 +5,7 @@ import ingredientService from '../features/ingredients/ingredientService';
 import outletService from '../features/outlets/outletService'; // Impor outletService
 import Modal from '../components/Modal'; // Impor komponen Modal
 import { useOutlet } from '../context/OutletContext'; // <-- 1. Impor useOutlet
-import api, { SERVER_URL } from '../api/axiosConfig';
+import { getImageUrl } from '../utils/urlHelper';
 
 const ProductManager = () => {
   const [catalogProducts, setCatalogProducts] = useState([]); // Daftar produk di katalog utama
@@ -114,7 +114,7 @@ const ProductManager = () => {
     setFormData(product ? { ...product, bundleQuantity: product.bundleQuantity || 1, recipe: initialRecipe } : { name: '', costPrice: '', sellingPrice: '', bundleQuantity: 1, category: 'pentol', image: '', recipe: [] });
     // Atur pratinjau gambar
     if (product && product.image) {
-      setImagePreview(`${SERVER_URL}${product.image}`);
+      setImagePreview(getImageUrl(product.image));
     } else {
       setImagePreview(null);
     }
@@ -397,7 +397,7 @@ const ProductManager = () => {
                 {catalogProducts.map((product) => (
                   <div key={product._id} style={{ display: 'flex', alignItems: 'center', padding: '1rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '8px' }}>
                     <div style={{ flexShrink: 0, marginRight: '1rem' }}>
-                      {product.image ? ( <img src={`${SERVER_URL}${product.image}`} alt={product.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} /> ) : (
+                      {product.image ? ( <img src={getImageUrl(product.image)} alt={product.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} /> ) : (
                         <img src={`https://ui-avatars.com/api/?name=${product.name.replace(/ /g, '+')}&background=random&color=fff&size=60`} alt={product.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
                       ) }
                     </div>

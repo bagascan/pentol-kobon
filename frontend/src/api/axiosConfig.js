@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-// PERBAIKAN: Hapus URL hardcode. Gunakan path relatif agar Vercel bisa
-// menangani routing ke backend sesuai aturan di vercel.json.
-export const SERVER_URL = ''; // Tidak perlu lagi
+// Gunakan path relatif agar Vercel & Vite Proxy bisa menangani routing ke backend.
 const API_URL = '/api';
 
 const api = axios.create({

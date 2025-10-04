@@ -5,8 +5,8 @@ import inventoryService from '../features/inventory/inventoryService'; // Ganti 
 import dailyLogService from '../features/dailyLogs/dailyLogService'; // <-- 1. Impor service dailyLog
 import transactionService from '../features/transactions/transactionService';
 import api from '../api/axiosConfig'; // Import instance axios
-import Modal from '../components/Modal';
-import { SERVER_URL } from '../api/axiosConfig';
+import Modal from '../components/Modal'; // Import instance axios
+import { getImageUrl } from '../utils/urlHelper'; // Import helper untuk URL gambar
 import { useOutlet } from '../context/OutletContext';
 
 function Kasir() {
@@ -276,8 +276,8 @@ function Kasir() {
 
                 return (
                   <div key={product._id} style={{ display: 'flex', alignItems: 'center', padding: '0.3rem', border: '1px solid #eee', borderRadius: '8px', background: qtyInCart > 0 ? '#fff3e0' : 'white', opacity: isDisabled ? 0.5 : 1, cursor: isDisabled ? 'not-allowed' : 'default' }} title={isDisabled ? 'Sesi belum dimulai' : ''}>
-                    <img
-                      src={product.image ? `${SERVER_URL}${product.image}` : `https://ui-avatars.com/api/?name=${product.name.replace(/ /g, '+')}&background=random&color=fff`} 
+                    <img // PERBAIKAN: Gunakan getImageUrl
+                      src={product.image ? getImageUrl(product.image) : `https://ui-avatars.com/api/?name=${product.name.replace(/ /g, '+')}&background=random&color=fff`} 
                       alt={product.name} 
                       style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '6px', marginRight: '1rem' }} 
                     />
