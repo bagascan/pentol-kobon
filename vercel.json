@@ -13,12 +13,12 @@
   ],
   "routes": [
     {
-      "source": "/uploads/(.*)",
-      "destination": "/backend/server.js"
+      "src": "/uploads/(.*)",
+      "dest": "/backend/server.js"
     },
     {
-      "source": "/api/(.*)",
-      "destination": "/backend/server.js"
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
     },
     {
       "src": "/assets/(.*)",
