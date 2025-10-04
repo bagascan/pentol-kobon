@@ -39,11 +39,6 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
   console.error('Error koneksi database:', error.message);
 });
 
-// Contoh Route Sederhana untuk tes
-app.get('/', (req, res) => {
-  res.send('API Pentol Kobong Siap!');
-});
-
 // Gunakan Routes
 app.use('/api/users', userRoutes);
 app.use('/api/products', productRoutes);
