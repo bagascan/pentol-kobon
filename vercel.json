@@ -11,7 +11,7 @@
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
       "source": "/uploads/(.*)",
       "destination": "/backend/server.js"
@@ -21,8 +21,12 @@
       "destination": "/backend/server.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "frontend/index.html"
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
