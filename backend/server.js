@@ -1,6 +1,17 @@
 // Import library
 require('dotenv').config(); // Untuk memuat variabel dari .env
 
+// --- KODE DEBUG UNTUK ENVIRONMENT VARIABLES ---
+console.log('--- Memeriksa Environment Variables ---');
+console.log('MONGO_URI:', process.env.MONGO_URI ? 'Ditemukan' : 'TIDAK DITEMUKAN');
+console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'Ditemukan' : 'TIDAK DITEMUKAN');
+console.log('------------------------------------');
+
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET tidak ditemukan. Pastikan file .env ada di root proyek dan berisi JWT_SECRET.');
+  process.exit(1); // Hentikan server jika JWT_SECRET tidak ada
+}
+
 // --- PERBAIKAN: Atur Zona Waktu Default ke Indonesia (WIB) ---
 process.env.TZ = 'Asia/Jakarta';
 

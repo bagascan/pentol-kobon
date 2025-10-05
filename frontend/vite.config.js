@@ -61,10 +61,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5001',
+        target: 'https://60c8f364-ede3-46f3-bdc5-eb369a5125ee-00-2hm7qr1hutgxs.pike.replit.dev',
         changeOrigin: true,
+        secure: false,
       },
     },
   },
-
 })

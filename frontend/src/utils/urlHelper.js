@@ -1,12 +1,13 @@
 const getImageUrl = (imagePath) => {
-  // Vite menyediakan variabel `import.meta.env.DEV`
-  // yang bernilai `true` saat development dan `false` saat production.
-  if (import.meta.env.DEV) {
-    // Saat development, kita butuh URL lengkap ke server backend lokal.
-    return `http://localhost:5001${imagePath}`;
+  // URL dasar backend Anda, tanpa /api
+  const backendBaseUrl = 'https://60c8f364-ede3-46f3-bdc5-eb369a5125ee-00-2hm7qr1hutgxs.pike.replit.dev';
+
+  if (!imagePath) {
+    return ''; // Kembalikan string kosong jika path gambar tidak ada
   }
-  // Saat production di Vercel, path-nya sudah benar karena berada di domain yang sama.
-  return imagePath;
+
+  // Gabungkan URL dasar backend dengan path gambar
+  return `${backendBaseUrl}${imagePath}`;
 };
 
 export { getImageUrl };

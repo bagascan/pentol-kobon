@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 const asyncHandler = require('express-async-handler');
 const webpush = require('web-push');
@@ -62,30 +62,37 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/login
 // @access  Public
 const loginUser = asyncHandler(async (req, res) => {
+  console.log('--- DEBUG: Proses Login Dimulai ---');
   const { email, password } = req.body;
+  console.log(`Mencoba login dengan email: ${email}`);
 
-  // 2. Cek email user
+  // 1. Cek email user
   const user = await User.findOne({ email });
 
-  // 3. Jika user ditemukan dan password cocok
-  if (user && (await bcrypt.compare(password, user.password))) {
-    // Cek apakah user sudah diverifikasi oleh owner
+  if (!user) {
+    console.log('User tidak ditemukan di database.');
+    res.status(400); // Gunakan 400 untuk kredensial tidak valid
+    throw new Error('Kredensial tidak valid');
+  }
+  console.log(`User ditemukan: ${user.name}. Memeriksa password...`);
+  console.log(`Password dari DB (ada?): ${user.password ? 'Ya' : 'Tidak'}`);
+
+  // 2. Jika user ditemukan, bandingkan password
+  const isMatch = user && user.password && (await bcrypt.compare(password, user.password));
+
+  if (isMatch) {
+    console.log('Password cocok. Memeriksa status verifikasi...');
     if (!user.isVerified) {
+      console.log('Login gagal: Akun belum diverifikasi.');
       res.status(401);
       throw new Error('Akun Anda belum diverifikasi oleh owner. Mohon tunggu.');
     }
 
-    res.status(200).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      isVerified: user.isVerified,
-      outlet: user.outlet, // Tambahkan ini untuk mengirim ID outlet karyawan
-      token: generateToken(user._id),
-    });
+    console.log('Login berhasil! Mengirim token...');
+    res.status(200).json({ _id: user.id, name: user.name, email: user.email, role: user.role, isVerified: user.isVerified, outlet: user.outlet, token: generateToken(user._id) });
   } else {
-    res.status(400);
+    console.log('Login gagal: Password tidak cocok.');
+    res.status(400); // Gunakan 400 untuk kredensial tidak valid
     throw new Error('Kredensial tidak valid');
   }
 });
